@@ -2,7 +2,7 @@
 
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
   <App xmlns="" ProductID="{5fcb8b10-1065-4830-bcf7-78222ae5f604}" Title="Redmine.Client.Ui" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal"  Author="Redmine.Client.Ui author" Description="Sample description" Publisher="Redmine.Client.Ui">
-    <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
+    <IconPath IsRelative="true" IsResource="false">Images\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_GAMERSERVICES"/>
       <Capability Name="ID_CAP_IDENTITY_DEVICE"/>
@@ -20,12 +20,12 @@
       <Capability Name="ID_CAP_APPOINTMENTS"/>
     </Capabilities>
     <Tasks>
-      <DefaultTask  Name ="_default" NavigationPage="MainPage.xaml"/>
+      <DefaultTask  Name ="_default" />
     </Tasks>
     <Tokens>
       <PrimaryToken TokenID="Redmine.Client.UiToken" TaskName="_default">
         <TemplateType5>
-          <BackgroundImageURI IsRelative="true" IsResource="false">Background.png</BackgroundImageURI>
+          <BackgroundImageURI IsRelative="true" IsResource="false">Images\Background.png</BackgroundImageURI>
           <Count>0</Count>
           <Title>Redmine.Client.Ui</Title>
         </TemplateType5>
