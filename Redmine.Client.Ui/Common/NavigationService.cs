@@ -116,7 +116,7 @@
         /// </summary>
         private void Initialize()
         {
-            rootFrame = new PhoneApplicationFrame();
+            rootFrame = new TransitionFrame();
             rootFrame.Navigated += OnNavigated;
             rootFrame.NavigationFailed += OnNavigationFailed;
 

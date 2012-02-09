@@ -1,29 +1,27 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone">
-    <Style x:Key="OriginalPageStyle" TargetType="phone:PhoneApplicationPage" >
-        <Setter Property="Template" >
+                    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+                    xmlns:controls="clr-namespace:Redmine.Client.Ui.Controls">
+    <Style TargetType="toolkit:TransitionFrame">
+        <Setter Property="Background" Value="{StaticResource PhoneBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Border Grid.Row="0" 
-                                Background="#b40e10" >
-                            <StackPanel Height="50" 
-                                        HorizontalAlignment="Left" 
-                                        Orientation="Horizontal" >
-                                <TextBlock Text="asddas asdas d" />
-                                <Image Margin="20 0 0 0" 
-                                       Height="35" 
-                                       HorizontalAlignment="Left" 
-                                       Source="../Images/Redmine.png" />
-                            </StackPanel>
-                        </Border>
-                        <ContentPresenter Grid.Row="1" Content="{TemplateBinding Content}" />
-                    </Grid>
+                <ControlTemplate TargetType="toolkit:TransitionFrame">
+                    <Border x:Name="ClientArea" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Margin="{TemplateBinding Margin}">
+                        <Grid>       
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <controls:Header Grid.Row="0" />
+                            <ContentPresenter Grid.Row="1" x:Name="FirstContentPresenter" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <ContentPresenter Grid.Row="1" x:Name="SecondContentPresenter" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
