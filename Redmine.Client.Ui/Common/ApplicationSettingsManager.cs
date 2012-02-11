@@ -1,5 +1,6 @@
 ﻿namespace Redmine.Client.Ui.Common
 {
+    using System.Collections.Generic;
     using System.IO.IsolatedStorage;
 
     /// <summary>
@@ -8,31 +9,42 @@
     public class ApplicationSettingsManager : IApplicationSettingsManager
     {
         /// <summary>
+        /// Gets the isolated storage settings.
+        /// </summary>
+        private IsolatedStorageSettings Storage
+        {
+            get
+            {
+                return IsolatedStorageSettings.ApplicationSettings;
+            }
+        }
+
+        /// <summary>
         /// Gets Redmine client credentials class.
         /// </summary>
         /// <returns>
-        /// The instance of <see cref="ClientCredentials"/>
+        /// The instance of <see cref="ConnectionSettings"/>
         /// </returns>
-        public ClientCredentials GetCredentials()
+        public ConnectionSettings GetConnectionSettings()
         {
-            if (IsolatedStorageSettings.ApplicationSettings.Contains("RedmineClientCredentials"))
+            if (Storage.Contains("ConnectionSettings"))
             {
-                var storage = (ClientCredentials)IsolatedStorageSettings.ApplicationSettings["RedmineClientCredentials"];
+                var storage = (ConnectionSettings)Storage["ConnectionSettings"];
                 return storage;
             }
 
-            return null;
+            return new ConnectionSettings { AuthenticationRequired = false, Url = @"http://www.redmine.org" };
         }
-
+        
         /// <summary>
         /// Sets the application network credentials.
         /// </summary>
         /// <param name="credentials">
         /// The credentials.
         /// </param>
-        public void SetCredentials(ClientCredentials credentials)
+        public void SetConnectionSettings(ConnectionSettings credentials)
         {
-            IsolatedStorageSettings.ApplicationSettings["RedmineClientCredentials"] = credentials;
+            IsolatedStorageSettings.ApplicationSettings["ConnectionSettings"] = credentials;
         }
     }
 }

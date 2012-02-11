@@ -8,16 +8,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    xmlns:converters="clr-namespace:Phone7.Fx.Converters;assembly=Phone7.Fx" mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
+    xmlns:phone7="clr-namespace:Phone7.Fx.Controls;assembly=Phone7.Fx" mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="728"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="False">
-
-    <phone:PhoneApplicationPage.Resources>
-        <converters:VisibilityConverter x:Key="VisibilityConverter" />
-    </phone:PhoneApplicationPage.Resources>
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -45,24 +41,44 @@
         <!--Pivot Control-->
         <controls:Pivot >
             <!--Pivot item one-->
-            <controls:PivotItem Header="settings" Margin="25 5 10 0" >
+            <controls:PivotItem Header="settings" Margin="15 5 15 0" >
                 <StackPanel>
                     <TextBlock Text="Remine Url" Style="{StaticResource PhoneTextSubtleStyle}" />
-                    <TextBox />
+                    <toolkit:AutoCompleteBox
+                                          Text="{Binding Url, Mode=TwoWay}"
+                                          SelectedItem="{Binding SelectedConnectionSettings, Mode=TwoWay}"
+                                          ItemsSource="{Binding ConnectionSettings}" />
                     <toolkit:ToggleSwitch x:Name="auchRequired" 
-                                          Margin="0 30 0 0" 
+                                          Margin="0 10 0 0" 
+                                          IsChecked="{Binding AuthenticationRequired, Mode=TwoWay}"
                                           Header="Authentication required" />
 
-                    <StackPanel Margin="0 0 0 0" Visibility="{Binding Path=IsChecked, ElementName=auchRequired, Converter={StaticResource VisibilityConverter}, FallbackValue=Collapsed}" >
+                    <StackPanel >
                         <TextBlock Text="Login" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <TextBox />
+                        <TextBox Text="{Binding UserName, Mode=TwoWay}" IsEnabled="{Binding Path=IsChecked, ElementName=auchRequired}" />
                         <TextBlock Text="Password" Style="{StaticResource PhoneTextSubtleStyle}" />
-                        <PasswordBox />
+                        <PasswordBox Password="{Binding Password, Mode=TwoWay}" IsEnabled="{Binding Path=IsChecked, ElementName=auchRequired}" />
                     </StackPanel>                    
+                    
+                    <Button Margin="0 30 0 0" Command="{Binding Path=TestConnectionCommand}" Content="Test Connection" />
                 </StackPanel>
             </controls:PivotItem>
 
         </controls:Pivot>
+
+        <!--Sample code showing usage of ApplicationBar-->
+        <phone7:BindableApplicationBar IsVisible="True" IsMenuEnabled="True" >
+            <phone7:BindableApplicationBarIconButton 
+                IsEnabled="{Binding Path=Changed}"
+                Command="{Binding Path=SaveCommand}"
+                Text="save" 
+                IconUri="/Images/appbar.check.rest.png" />
+            <phone7:BindableApplicationBarIconButton
+                IsEnabled="{Binding Path=Changed}"
+                Command="{Binding Path=RollbackCommand}"
+                Text="cancel" 
+                IconUri="/Images/appbar.cancel.rest.png" />
+        </phone7:BindableApplicationBar>
 
     </Grid>
    

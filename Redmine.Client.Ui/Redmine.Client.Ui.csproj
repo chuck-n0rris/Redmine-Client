@@ -84,7 +84,7 @@
     </Compile>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Common\ApplicationSettingsManager.cs" />
-    <Compile Include="Common\ClientCredentials.cs" />
+    <Compile Include="Common\ConnectionSettings.cs" />
     <Compile Include="Common\IApplicationSettingsManager.cs" />
     <Compile Include="Common\INavigationService.cs" />
     <Compile Include="Common\NavigationService.cs" />
@@ -93,9 +93,12 @@
     <Compile Include="Controls\Header.xaml.cs">
       <DependentUpon>Header.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\NotifyingModelBase.cs" />
+    <Compile Include="Models\NotifyingModelBaseExtensions.cs" />
     <Compile Include="Models\ProjectDetailsViewModel.cs" />
     <Compile Include="Models\MainViewModel.cs" />
     <Compile Include="Models\SettingsViewModel.cs" />
+    <Compile Include="Models\TrackingChangesModel.cs" />
     <Compile Include="Pages\ProjectDetails.xaml.cs">
       <DependentUpon>ProjectDetails.xaml</DependentUpon>
     </Compile>

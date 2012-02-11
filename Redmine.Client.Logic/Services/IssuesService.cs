@@ -13,18 +13,7 @@
     public class IssuesService : ServiceClent, IIssuesService
     {
         private Subject<Issue> issuesList;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceClent"/> class.
-        /// </summary>
-        /// <param name="credentials">
-        /// Authentication credentials.
-        /// </param>
-        public IssuesService(RedmineCredentials credentials)
-            : base(credentials)
-        {
-        }
-
+        
         /// <summary>
         /// Gets the issues asynchronously
         /// </summary>

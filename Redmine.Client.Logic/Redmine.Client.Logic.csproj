@@ -70,7 +70,7 @@
     <Compile Include="Services\IProjectsService.cs" />
     <Compile Include="Services\IssuesService.cs" />
     <Compile Include="Services\ProjectsService.cs" />
-    <Compile Include="Services\RedmineCredentials.cs" />
+    <Compile Include="Services\RedmineConnectionSettings.cs" />
     <Compile Include="Services\ServiceClent.cs" />
   </ItemGroup>
   <ItemGroup>

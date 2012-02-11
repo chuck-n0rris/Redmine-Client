@@ -1,10 +1,17 @@
 ﻿namespace Redmine.Client.Ui.Common
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Contains fields for login to the redmine client.
     /// </summary>
-    public class ClientCredentials
+    public class ConnectionSettings
     {
+        /// <summary>
+        /// Gets or sets a value indicating whether authentication required.
+        /// </summary>
+        public bool AuthenticationRequired { get; set; }
+
         /// <summary>
         /// Gets or sets the login.
         /// </summary>

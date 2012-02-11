@@ -9,8 +9,16 @@ namespace Redmine.Client.Ui.Common
         /// Gets Redmine client credentials class.
         /// </summary>
         /// <returns>
-        /// The instance of <see cref="ClientCredentials"/>
+        /// The instance of <see cref="ConnectionSettings"/>
         /// </returns>
-        ClientCredentials GetCredentials();
+        ConnectionSettings GetConnectionSettings();
+        
+        /// <summary>
+        /// Sets the application network credentials.
+        /// </summary>
+        /// <param name="credentials">
+        /// The credentials.
+        /// </param>
+        void SetConnectionSettings(ConnectionSettings credentials);
     }
 }

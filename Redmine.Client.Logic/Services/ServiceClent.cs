@@ -8,18 +8,13 @@
     /// </summary>
     public class ServiceClent
     {
-        private readonly RedmineCredentials credentials;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceClent"/> class.
+        /// Gets or sets the connection settings.
         /// </summary>
-        /// <param name="credentials">
-        /// Authentication credentials.
-        /// </param>
-        protected ServiceClent(RedmineCredentials credentials)
-        {
-            this.credentials = credentials;
-        }
+        /// <value>
+        /// The connection settings.
+        /// </value>
+        public RedmineConnectionSettings ConnectionSettings { get; set; }
 
         /// <summary>
         /// Send the GET request to the server.
@@ -33,18 +28,22 @@
         /// </param>
         protected void HttpGet<T>(string urlFragment, Action<T> callback)
         {
-            var webClient = new WebClient 
-            { 
-                Credentials = new NetworkCredential
+            var webClient = new WebClient();
+            if (this.ConnectionSettings.AuthenticationRequired)
+            {
+                webClient.Credentials = new NetworkCredential
                 {
-                    UserName = this.credentials.Login,
-                    Password = this.credentials.Password
-                }
-            };
+                    UserName = this.ConnectionSettings.Login,
+                    Password = this.ConnectionSettings.Password
+                };
+            }
 
-            webClient.DownloadStringAsync(new Uri(string.Format(@"{0}/{1}", credentials.Url, urlFragment)));
+            webClient.DownloadStringAsync(new Uri(string.Format(@"{0}/{1}", this.ConnectionSettings.Url, urlFragment)));
             webClient.DownloadStringCompleted += (sender, args) =>
             {
+                if (args.Error != null) 
+                    throw args.Error;
+
                 var value = Serializer.Deserialize<T>(args.Result);
                 callback(value);
             };

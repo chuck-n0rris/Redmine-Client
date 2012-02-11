@@ -13,18 +13,7 @@
     public class ProjectsService : ServiceClent, IProjectsService
     {
         private Subject<Project> projectsList;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceClent"/> class.
-        /// </summary>
-        /// <param name="credentials">
-        /// Authentication credentials.
-        /// </param>
-        public ProjectsService(RedmineCredentials credentials)
-            : base(credentials)
-        {
-        }
-
+        
         /// <summary>
         /// Gets the collection of projects.
         /// </summary>

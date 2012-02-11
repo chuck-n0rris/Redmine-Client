@@ -81,7 +81,8 @@
                 System.Diagnostics.Debugger.Break();
             }
 
-            ;
+            MessageBox.Show(e.ExceptionObject.Message, "Error", MessageBoxButton.OK);
+            e.Handled = true;
         }
 
         #region Phone application initialization

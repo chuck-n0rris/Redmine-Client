@@ -42,7 +42,7 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!--Pivot Control-->
-        <controls:Pivot>
+        <controls:Pivot Margin="0 0 0 5">
             <!--Pivot item two-->
             <controls:PivotItem Header="projects" Margin="25 5 10 0" >
                 <ListBox x:Name="ProjectsListBox" Grid.Row="1" ItemsSource="{Binding Projects}" >
