@@ -2,7 +2,10 @@
 {
     using System.Windows.Input;
     using GalaSoft.MvvmLight.Command;
+
+    using Redmine.Client.Logic.Services;
     using Redmine.Client.Ui.Common;
+    using Redmine.Client.Ui.Mvvm;
 
     /// <summary>
     /// View model for the settings page view.
@@ -10,15 +13,30 @@
     public class SettingsViewModel : TrackingChangesModel
     {
         private readonly IApplicationSettingsManager settingsManager;
+        private readonly IPingService pingService;
+
+        private readonly IMessagesService messagesService;
 
         /// <summary>
         /// Initializes a new instance of the ViewModelBase class.
         /// </summary>
-        /// <param name="settingsManager">The application settings manager.</param>
-        public SettingsViewModel(IApplicationSettingsManager settingsManager)
+        /// <param name="settingsManager">
+        /// The application settings manager.
+        /// </param>
+        /// <param name="pingService">
+        /// Provides methods to check connection. 
+        /// </param>
+        /// <param name="messagesService">
+        /// This service provode manipulation with child winfows.
+        /// </param>
+        public SettingsViewModel(IApplicationSettingsManager settingsManager, 
+                                 IPingService pingService,
+                                 IMessagesService messagesService)
         {
             this.settingsManager = settingsManager;
-            
+            this.pingService = pingService;
+            this.messagesService = messagesService;
+
             this.SaveCommand = new RelayCommand(OnSave);
             this.RollbackCommand = new RelayCommand(OnRollback);
             this.TestConnectionCommand = new RelayCommand(OnTestConnection);
@@ -119,6 +137,18 @@
         /// </summary>
         private void OnTestConnection()
         {
+            this.pingService.TestConnection()
+                .ContinueWith(it => UiThread.Dispatch(() =>
+                    {
+                        if (it.IsFaulted)
+                        {
+                            messagesService.Error("Connection to the server with such parameters forbidden.");
+                            return;
+                        }
+
+                        messagesService.Info("Connection to the server was successful.");
+                        it.Dispose();
+                    }));
         }
     }
 }

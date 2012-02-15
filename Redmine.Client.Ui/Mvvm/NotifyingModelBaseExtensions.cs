@@ -1,7 +1,6 @@
-﻿namespace Redmine.Client.Ui.Models
+namespace Redmine.Client.Ui.Mvvm
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
 
@@ -69,7 +68,7 @@
                                                                      params Expression<Func<TInstance, TMember>>[] expressions)
             where TInstance : TrackingChangesModel
         {
-            var props = expressions.Select(it => instance.GetMemberName(it)).ToArray();
+            var props = expressions.Select(it => instance.GetMemberName<TInstance, TMember>(it)).ToArray();
             instance.SetTrackingProperties(props);
         }
 

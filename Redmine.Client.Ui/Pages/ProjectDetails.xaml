@@ -7,8 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone" 
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:phone7="clr-namespace:Phone7.Fx.Controls;assembly=Phone7.Fx" mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -42,62 +42,68 @@
         <controls:Pivot Grid.Row="1">
             <!--Pivot item one-->
             <controls:PivotItem Header="issues" Margin="25 5 10 0" >
-                <ListBox x:Name="ProjectsListBox" ItemsSource="{Binding Issues}" >
-                    <ListBox.ItemsPanel>
+                <phone7:LoadingListBox x:Name="ProjectsListBox" LoadingVisibility="Visible" ItemsSource="{Binding Issues}" >
+                    <phone7:LoadingListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel />
                         </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
+                    </phone7:LoadingListBox.ItemsPanel>
+                    <phone7:LoadingListBox.ItemTemplate>
                         <DataTemplate>
-                            <Button Margin="0 0 0 5" Command="{Binding DataContext.SelectProjectCommand, ElementName=ProjectsListBox}" CommandParameter="{Binding}" toolkit:TiltEffect.IsTiltEnabled="True" >
+                            <Button Width="445" Margin="0 0 0 10" Command="{Binding DataContext.SelectProjectCommand, ElementName=ProjectsListBox}" CommandParameter="{Binding}" toolkit:TiltEffect.IsTiltEnabled="True" >
                                 <Button.Template>
                                     <ControlTemplate>
-                                        <Grid Height="90" >
+                                        <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="60" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock 
+                                               Grid.Row="0" 
+                                               Grid.ColumnSpan="2"
+                                               VerticalAlignment="Bottom"
+                                               HorizontalAlignment="Right"
+                                               Text="{Binding Tracker}" 
+                                               Foreground="{StaticResource PhoneSubtleBrush}"
+                                               FontSize="{StaticResource PhoneFontSizeNormal}" 
+                                               FontFamily="{StaticResource PhoneFontFamilySemiLight}"  /> 
+                                            <TextBlock Grid.Row="0" 
+                                               Text="{Binding Title}"
+                                               TextWrapping="Wrap"
+											   HorizontalAlignment="Stretch"
+                                               Foreground="{StaticResource PhoneForegroundBrush}"
+                                               FontSize="{StaticResource PhoneFontSizeExtraLarge}" 
+                                               FontFamily="{StaticResource PhoneFontFamilySemiLight}" VerticalAlignment="Center" />
+                                            <TextBlock Grid.Row="1"
+                                               Text="{Binding Subject}"
+                                               TextWrapping="Wrap"
+                                               Height="50"
+                                               Foreground="{StaticResource PhoneAccentBrush}"
+                                               FontSize="{StaticResource PhoneFontSizeNormal}" 
+                                               FontFamily="{StaticResource PhoneFontFamilySemiLight}"/>
 
-                                            <StackPanel>
-                                                <TextBlock 
-                                                    Text="{Binding Subject}"     
-                                                    Height="30"
-                                                    Margin="0,8,0,-4"
-                                                    Foreground="{StaticResource PhoneForegroundBrush}"
-                                                    FontSize="{StaticResource PhoneFontSizeMediumLarge}" 
-                                                    FontFamily="{StaticResource PhoneFontFamilySemiLight}"/>
-                                                <TextBlock 
-                                                    Text="{Binding Description}"
-                                                    TextWrapping="Wrap"
-                                                    Margin="0,0,0,-2"
-                                                    Foreground="{StaticResource PhoneAccentBrush}"
-                                                    FontSize="{StaticResource PhoneFontSizeNormal}" 
-                                                    FontFamily="{StaticResource PhoneFontFamilyNormal}"/>
-                                            </StackPanel>
-
-                                            <!--<TextBlock Style="{StaticResource PhoneTextTitle2Style}" Text="{Binding }" />
-                                            <TextBlock Grid.Row="1" Height="55" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}" Text="{Binding }" />
-                                            <StackPanel Grid.Row="2" Orientation="Horizontal">
-                                                <TextBlock Text="Created:" Style="{StaticResource PhoneTextSubtleStyle}" />
-                                                <TextBlock Text="{Binding CreatedOn}" Style="{StaticResource PhoneTextSubtleStyle}" />
-                                            </StackPanel>-->
                                         </Grid>
                                     </ControlTemplate>
                                 </Button.Template>
                             </Button>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                    </phone7:LoadingListBox.ItemTemplate>
+                </phone7:LoadingListBox>
             </controls:PivotItem>
-
-            <!--Pivot item two-->
-            <controls:PivotItem Header="activity" Margin="25 15 25 0" >
-                <Grid/>
-            </controls:PivotItem>
-
         </controls:Pivot>
+
+        <!--Sample code showing usage of ApplicationBar-->
+        <phone7:BindableApplicationBar IsVisible="True" IsMenuEnabled="True" >
+            <phone7:BindableApplicationBarIconButton
+                Command="{Binding Path=CreateCommand}"
+                Text="new" 
+                IconUri="/Images/appbar.new.rest.png" >
+            </phone7:BindableApplicationBarIconButton>
+        </phone7:BindableApplicationBar>
 
     </Grid>
 

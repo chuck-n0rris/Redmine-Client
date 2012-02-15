@@ -43,10 +43,31 @@
             {
                 Id = model.Id,
                 Subject = model.Subject,
-                Description = model.Description
+                Description = model.Description,
+                Tracker = new Tracker { Id = model.Tracker.Id, Name = model.Tracker.Name }
             };
 
             return issue;
+        }
+
+        /// <summary>
+        /// Converts from <see cref="NewsModel"/> to <see cref="News"/> object.
+        /// </summary>
+        /// <param name="model">The data access model.</param>
+        /// <returns>
+        /// The instance of <see cref="News"/> entity.
+        /// </returns>
+        public static News ToNews(this NewsModel model)
+        {
+            var news = new News
+            {
+                Id = model.Id,
+                Title  = model.Title,
+                Description = model.Description,
+                CreatedOn = model.CreatedOn
+            };
+
+            return news;
         }
     }
 }

@@ -1,21 +1,17 @@
 ﻿namespace Redmine.Client.Logic.Services
 {
     using System;
+    using System.IO;
     using System.Net;
-    
+    using System.Threading.Tasks;
+
+    using Redmine.Client.Logic.Models;
+
     /// <summary>
     /// The base class for all services.
     /// </summary>
     public class ServiceClent
     {
-        /// <summary>
-        /// Gets or sets the connection settings.
-        /// </summary>
-        /// <value>
-        /// The connection settings.
-        /// </value>
-        public RedmineConnectionSettings ConnectionSettings { get; set; }
-
         /// <summary>
         /// Send the GET request to the server.
         /// </summary>
@@ -23,30 +19,45 @@
         /// <param name="urlFragment">
         /// The URL fragemnt which identify the operation.
         /// </param>
-        /// <param name="callback">
-        /// The callback action which will called when download operaton completed.
-        /// </param>
-        protected void HttpGet<T>(string urlFragment, Action<T> callback)
+        /// <returns>The task with responce.</returns>
+        protected Task<T> HttpGet<T>(string urlFragment) where T : new()
         {
-            var webClient = new WebClient();
-            if (this.ConnectionSettings.AuthenticationRequired)
+             var request = WebRequest.Create(new Uri(string.Format(@"{0}/{1}", ServiceSettings.Url, urlFragment)));
+            
+            if (ServiceSettings.AuthenticationRequired)
             {
-                webClient.Credentials = new NetworkCredential
-                {
-                    UserName = this.ConnectionSettings.Login,
-                    Password = this.ConnectionSettings.Password
-                };
+                request.Credentials = new NetworkCredential
+                    {
+                        UserName = ServiceSettings.Login, 
+                        Password = ServiceSettings.Password
+                    };
             }
 
-            webClient.DownloadStringAsync(new Uri(string.Format(@"{0}/{1}", this.ConnectionSettings.Url, urlFragment)));
-            webClient.DownloadStringCompleted += (sender, args) =>
-            {
-                if (args.Error != null) 
-                    throw args.Error;
+            var task = Task.Factory
+                .FromAsync<WebResponse>(request.BeginGetResponse, request.EndGetResponse, this)
+                .ContinueWith<T>(it =>
+                {
+                    var response = (HttpWebResponse)it.Result;
+                    var stream = response.GetResponseStream();
 
-                var value = Serializer.Deserialize<T>(args.Result);
-                callback(value);
-            };
+                    var streamReader = new StreamReader(stream);
+                    var responce = streamReader.ReadToEnd();
+                    
+                    // TODO: Need to solve this trash :)
+                    if (typeof(T) == typeof(NewsListModel))
+                    {
+                        var index = responce.IndexOf("news", 0);
+                        responce = responce.Remove(index, 4).Insert(index, "news1");
+
+                        index = responce.LastIndexOf("news");
+                        responce = responce.Remove(index, 4).Insert(index, "news1");
+                    }
+
+                    var value = Serializer.Deserialize<T>(responce);
+                    return value;
+                });
+            
+            return task;
         }
     }
 }

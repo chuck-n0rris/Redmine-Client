@@ -1,7 +1,5 @@
 ﻿namespace Redmine.Client.Ui
 {
-    using System.Collections.Generic;
-
     using Autofac;
     using Autofac.Core;
     
@@ -26,7 +24,9 @@
             this.applicationSettings = new ApplicationSettingsManager();
 
             var builder = new ContainerBuilder();
-            this.RegisterTypes(builder);
+            
+            InitializeConnectionSettings();
+            RegisterTypes(builder);
             
             this.container = builder.Build();
 
@@ -42,21 +42,14 @@
         /// <param name="builder">The builder.</param>
         private void RegisterTypes(ContainerBuilder builder)
         {
-            builder.RegisterInstance(applicationSettings)
-                   .As<IApplicationSettingsManager>()
-                   .SingleInstance();
-            
-            builder.RegisterType<NavigationService>()
-                   .As<INavigationService>()
-                   .SingleInstance();
+            builder.RegisterInstance(applicationSettings).As<IApplicationSettingsManager>().SingleInstance();
+            builder.RegisterType<NavigationService>().As<INavigationService>().SingleInstance();
+            builder.RegisterType<UiMessagesService>().As<IMessagesService>().SingleInstance();
 
-            builder.RegisterType<ProjectsService>()
-                .As<IProjectsService>()
-                .OnActivating(it => it.ReplaceInstance(new ProjectsService { ConnectionSettings = GetRedmineSettingsParameter() }));
-
-            builder.RegisterType<IssuesService>()
-                .As<IIssuesService>()
-                .OnActivating(it => it.ReplaceInstance(new IssuesService { ConnectionSettings = GetRedmineSettingsParameter() }));
+            builder.RegisterType<ProjectsService>().As<IProjectsService>();
+            builder.RegisterType<IssuesService>().As<IIssuesService>();
+            builder.RegisterType<PingService>().As<IPingService>();
+            builder.RegisterType<NewsService>().As<INewsService>();
 
             // register view models
             builder.RegisterType<MainViewModel>();
@@ -65,22 +58,16 @@
         }
 
         /// <summary>
-        /// Converts to redmine connection settings.
+        /// Initializes the connection settings.
         /// </summary>
-        /// <returns>
-        /// Converted instance of <see cref="RedmineConnectionSettings"/> class.
-        /// </returns>
-        private RedmineConnectionSettings GetRedmineSettingsParameter()
+        private void InitializeConnectionSettings()
         {
             var settings = applicationSettings.GetConnectionSettings();
-
-            return new RedmineConnectionSettings
-                    {
-                        AuthenticationRequired = settings.AuthenticationRequired,
-                        Login = settings.Login,
-                        Password = settings.Password,
-                        Url = settings.Url
-                    };
+            
+            ServiceSettings.AuthenticationRequired = settings.AuthenticationRequired;
+            ServiceSettings.Login = settings.Login;
+            ServiceSettings.Password = settings.Password;
+            ServiceSettings.Url = settings.Url;
         }
     }
 }

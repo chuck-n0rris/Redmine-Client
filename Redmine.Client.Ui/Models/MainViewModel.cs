@@ -1,6 +1,6 @@
 ﻿namespace Redmine.Client.Ui.Models
 {
-    using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Windows.Input;
 
@@ -19,7 +19,10 @@
         private readonly IProjectsService projectsService;
         private readonly INavigationService navigationService;
 
+        private readonly INewsService newsService;
+
         private ObservableCollection<Project> projects;
+        private ObservableCollection<News> news;
 
         /// <summary>
         /// Initializes a new instance of the ViewModelBase class.
@@ -30,15 +33,32 @@
         /// <param name="navigationService">
         /// Provides navigations by pages in application. 
         /// </param>
-        public MainViewModel(IProjectsService projectsService, INavigationService navigationService)
+        /// <param name="newsService">
+        /// Provides news from the server.
+        /// </param>
+        public MainViewModel(IProjectsService projectsService, 
+                             INavigationService navigationService,
+                             INewsService newsService)
         {
             this.InitializeCommands();
 
             this.projects = new ObservableCollection<Project>();
+            this.news = new ObservableCollection<News>();
 
             this.projectsService = projectsService;
             this.navigationService = navigationService;
-            this.projectsService.Get().Subscribe(proj => UiThread.Dispatch(() => this.projects.Add(proj)));
+            this.newsService = newsService;
+
+            this.projectsService.Get()
+                .ContinueWith(it => UiThread.Dispatch(() =>
+                    {
+                        foreach (var project in it.Result)
+                        {
+                            this.Projects.Add(project);
+                        }
+                    }));
+
+            this.newsService.GetAll().ContinueWith(it => UiThread.Dispatch(() => OnNewsReceived(it.Result)));
         }
 
         /// <summary>
@@ -65,6 +85,37 @@
             {
                 this.projects = value;
                 this.RaisePropertyChanged("Projects");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the projects.
+        /// </summary>
+        public ObservableCollection<News> News
+        {
+            get
+            {
+                return this.news;
+            }
+
+            set
+            {
+                this.news = value;
+                this.RaisePropertyChanged("News");
+            }
+        }
+
+        /// <summary>
+        /// Called when news received.
+        /// </summary>
+        /// <param name="newsList">
+        /// The enumeration of news.
+        /// </param>
+        private void OnNewsReceived(IEnumerable<News> newsList)
+        {
+            foreach (var item in newsList)
+            {
+                this.News.Add(item);
             }
         }
 

@@ -1,4 +1,4 @@
-namespace Redmine.Client.Ui.Models
+namespace Redmine.Client.Ui.Mvvm
 {
     using System;
     using System.Collections.Generic;

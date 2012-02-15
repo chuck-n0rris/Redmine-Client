@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.IO.IsolatedStorage;
 
+    using Redmine.Client.Logic.Services;
+
     /// <summary>
     /// Manages the application settings.
     /// </summary>
@@ -44,6 +46,11 @@
         /// </param>
         public void SetConnectionSettings(ConnectionSettings credentials)
         {
+            ServiceSettings.AuthenticationRequired = credentials.AuthenticationRequired;
+            ServiceSettings.Login = credentials.Login;
+            ServiceSettings.Password = credentials.Password;
+            ServiceSettings.Url = credentials.Url;
+
             IsolatedStorageSettings.ApplicationSettings["ConnectionSettings"] = credentials;
         }
     }

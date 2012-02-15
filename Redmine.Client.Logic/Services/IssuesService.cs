@@ -1,7 +1,8 @@
 ﻿namespace Redmine.Client.Logic.Services
 {
-    using System;
-    using System.Reactive.Subjects;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     using Redmine.Client.Logic.Domain;
     using Redmine.Client.Logic.Extensions;
@@ -12,8 +13,6 @@
     /// </summary>
     public class IssuesService : ServiceClent, IIssuesService
     {
-        private Subject<Issue> issuesList;
-        
         /// <summary>
         /// Gets the issues asynchronously
         /// </summary>
@@ -21,23 +20,18 @@
         /// <returns>
         /// The observable issyes.
         /// </returns>
-        public IObservable<Issue> Get(int projectId)
+        public Task<IEnumerable<Issue>> Get(int projectId)
         {
-            this.issuesList = new Subject<Issue>();
-            
-            var request = string.Format(@"issues.xml?project_id={0}&limit=100", projectId);
-            this.HttpGet<IssuesListModel>(request, result =>
-            {
-                foreach (var issueModel in result.Issues)
-                {
-                    this.issuesList.OnNext(issueModel.ToIssue());
-                }
+            var request = string.Format(@"issues.xml?project_id={0}&limit=25", projectId);
 
-                this.issuesList.OnCompleted();
-                this.issuesList.Dispose();
-            });
+            var task = this.HttpGet<IssuesListModel>(request)
+                .ContinueWith<IEnumerable<Issue>>(it =>
+                    {
+                        var issuesList = it.Result.Issues.Select(issue => issue.ToIssue()).ToList();
+                        return issuesList;
+                    });
 
-            return this.issuesList;
+            return task;
         }
     }
 }

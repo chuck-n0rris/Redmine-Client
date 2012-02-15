@@ -1,21 +1,20 @@
 ﻿namespace Redmine.Client.Ui.Models
 {
-    using System;
     using System.Collections.ObjectModel;
-
-    using GalaSoft.MvvmLight;
-
+    
     using Redmine.Client.Logic.Domain;
     using Redmine.Client.Logic.Services;
+    using Redmine.Client.Ui.Common;
+    using Redmine.Client.Ui.Mvvm;
     using Redmine.Client.Ui.Pages;
 
     /// <summary>
     /// View model for <see cref="ProjectDetails"/> view.
     /// </summary>
-    public class ProjectDetailsViewModel : ViewModelBase
+    public class ProjectDetailsViewModel : NotificationObject
     {
         private readonly IIssuesService issuesService;
-        private ObservableCollection<Issue> issues;
+        private ObservableCollection<IssueViewModel> issues;
 
         /// <summary>
         /// Initializes a new instance of the ViewModelBase class.
@@ -26,13 +25,13 @@
         public ProjectDetailsViewModel(IIssuesService issuesService)
         {
             this.issuesService = issuesService;
-            this.issues = new ObservableCollection<Issue>();
+            this.issues = new ObservableCollection<IssueViewModel>();
         }
-        
+
         /// <summary>
         /// Gets or sets the projects.
         /// </summary>
-        public ObservableCollection<Issue> Issues
+        public ObservableCollection<IssueViewModel> Issues
         {
             get
             {
@@ -42,7 +41,7 @@
             set
             {
                 this.issues = value;
-                this.RaisePropertyChanged("Issues");
+                this.RaisePropertyChanged(() => Issues);
             }
         }
 
@@ -53,7 +52,13 @@
         public void Initialize(Project project)
         {
             this.issuesService.Get(project.Id)
-                .Subscribe(issue => Issues.Add(issue));
+                .ContinueWith(it => UiThread.Dispatch(() =>
+                {
+                    foreach (var issue in it.Result)
+                    {
+                        this.Issues.Add(new IssueViewModel(issue));
+                    }
+                }));
         }
     }
 }

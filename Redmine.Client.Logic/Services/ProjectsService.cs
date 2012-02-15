@@ -1,7 +1,8 @@
 ﻿namespace Redmine.Client.Logic.Services
 {
-    using System;
-    using System.Reactive.Subjects;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     using Redmine.Client.Logic.Domain;
     using Redmine.Client.Logic.Extensions;
@@ -12,28 +13,23 @@
     /// </summary>
     public class ProjectsService : ServiceClent, IProjectsService
     {
-        private Subject<Project> projectsList;
-        
         /// <summary>
         /// Gets the collection of projects.
         /// </summary>
         /// <returns>The list of projects.</returns>
-        public IObservable<Project> Get()
+        public Task<IEnumerable<Project>> Get()
         {
-            this.projectsList = new Subject<Project>();
+            var task = this.HttpGet<ProjectsListModel>("projects.xml")
+                .ContinueWith<IEnumerable<Project>>(it =>
+                    {
+                        var projectList = it.Result.Projects
+                            .Select(model => model.ToProject())
+                            .ToList();
 
-            this.HttpGet<ProjectsListModel>("projects.xml", result =>
-            {
-                foreach (var projectModel in result.Projects)
-                {
-                    this.projectsList.OnNext(projectModel.ToProject());
-                }
+                        return projectList;
+                    });
 
-                this.projectsList.OnCompleted();
-                this.projectsList.Dispose();
-            });
-            
-            return this.projectsList;
+            return task;
         }
     }
 }

@@ -6,14 +6,16 @@ namespace Redmine.Client.Logic.Services
     using Redmine.Client.Logic.Domain;
 
     /// <summary>
-    /// Provides manipulations with projects entities.
+    /// Provides news from the server.
     /// </summary>
-    public interface IProjectsService
+    public interface INewsService
     {
         /// <summary>
-        /// Gets the collection of projects.
+        /// Gets form the server all news.
         /// </summary>
-        /// <returns>The list of projects.</returns>
-        Task<IEnumerable<Project>> Get();
+        /// <returns>
+        /// Enumeration of news instances.
+        /// </returns>
+        Task<IEnumerable<News>> GetAll();
     }
 }

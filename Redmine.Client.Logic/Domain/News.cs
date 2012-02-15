@@ -1,9 +1,11 @@
 ﻿namespace Redmine.Client.Logic.Domain
 {
+    using System;
+
     /// <summary>
-    /// Describes the redmine issue.
+    /// News entity model.
     /// </summary>
-    public class Issue
+    public class News
     {
         /// <summary>
         /// Gets or sets the id.
@@ -11,9 +13,14 @@
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the tracker.
+        /// Gets or sets the title.
         /// </summary>
-        public Tracker Tracker { get; set; }
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets the summary.
+        /// </summary>
+        public string Summary { get; set; }
 
         /// <summary>
         /// Gets or sets the description.
@@ -21,8 +28,8 @@
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the subject.
+        /// Gets or sets the created on.
         /// </summary>
-        public string Subject { get; set; }
+        public DateTime CreatedOn { get; set; }
     }
 }

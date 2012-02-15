@@ -1,7 +1,8 @@
-﻿namespace Redmine.Client.Ui.Models
+namespace Redmine.Client.Ui.Mvvm
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+
     using Redmine.Client.Ui.Common;
 
     /// <summary>

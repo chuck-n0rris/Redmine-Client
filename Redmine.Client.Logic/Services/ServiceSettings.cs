@@ -1,28 +1,28 @@
 ﻿namespace Redmine.Client.Logic.Services
 {
     /// <summary>
-    /// Authentication credentials for Redmine API.
+    /// Contains global setting for all services.
     /// </summary>
-    public class RedmineConnectionSettings
+    public class ServiceSettings
     {
         /// <summary>
         /// Gets or sets a value indicating whether authentication required.
         /// </summary>
-        public bool AuthenticationRequired { get; set; }
+        public static bool AuthenticationRequired { get; set; }
 
         /// <summary>
         /// Gets or sets the name.
         /// </summary>
-        public string Login { get; set; }
-        
+        public static string Login { get; set; }
+
         /// <summary>
         /// Gets or sets the password.
         /// </summary>
-        public string Password { get; set; }
-        
+        public static string Password { get; set; }
+
         /// <summary>
         /// Gets or sets the URL.
         /// </summary>
-        public string Url { get; set; }
+        public static string Url { get; set; }
     }
 }

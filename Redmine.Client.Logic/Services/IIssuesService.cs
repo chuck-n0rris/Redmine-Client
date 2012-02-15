@@ -1,6 +1,9 @@
 namespace Redmine.Client.Logic.Services
 {
     using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     using Redmine.Client.Logic.Domain;
 
     /// <summary>
@@ -15,6 +18,6 @@ namespace Redmine.Client.Logic.Services
         /// <returns>
         /// The observable issyes.
         /// </returns>
-        IObservable<Issue> Get(int projectId);
+        Task<IEnumerable<Issue>> Get(int projectId);
     }
 }

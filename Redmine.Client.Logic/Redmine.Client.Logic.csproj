@@ -45,7 +45,7 @@
     <Reference Include="System.Reactive">
       <HintPath>..\packages\Rx-Main.1.0.11226\lib\SL3-WP\System.Reactive.dll</HintPath>
     </Reference>
-    <Reference Include="System.Threading.Tasks.WP71">
+    <Reference Include="System.Threading.Tasks.WP71, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.2.1.2\lib\sl4-wp71\System.Threading.Tasks.WP71.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
@@ -58,19 +58,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\Issue.cs" />
+    <Compile Include="Domain\News.cs" />
     <Compile Include="Domain\Project.cs" />
+    <Compile Include="Domain\Reference.cs" />
+    <Compile Include="Domain\Tracker.cs" />
     <Compile Include="Extensions\ConvertExtensions.cs" />
     <Compile Include="Models\IssueModel.cs" />
     <Compile Include="Models\IssuesListModel.cs" />
+    <Compile Include="Models\NewListModel.cs" />
+    <Compile Include="Models\NewModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
     <Compile Include="Models\ProjectsListModel.cs" />
+    <Compile Include="Models\ReferenceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializer.cs" />
+    <Compile Include="Services\INewsService.cs" />
+    <Compile Include="Services\NewsService.cs" />
+    <Compile Include="Services\ServiceSettings.cs" />
     <Compile Include="Services\IIssuesService.cs" />
+    <Compile Include="Services\IPingService.cs" />
     <Compile Include="Services\IProjectsService.cs" />
     <Compile Include="Services\IssuesService.cs" />
+    <Compile Include="Services\PingService.cs" />
     <Compile Include="Services\ProjectsService.cs" />
-    <Compile Include="Services\RedmineConnectionSettings.cs" />
     <Compile Include="Services\ServiceClent.cs" />
   </ItemGroup>
   <ItemGroup>
