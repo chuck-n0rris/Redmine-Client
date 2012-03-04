@@ -10,6 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Librares", "Librares", "{91
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redmine.Client.Logic", "Redmine.Client.Logic\Redmine.Client.Logic.csproj", "{BB6EE471-7273-47B8-A2AF-B38841065FEC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redmine.Client.Tests", "Redmine.Client.Tests\Redmine.Client.Tests.csproj", "{3A72CF30-C087-4F30-8F16-5D9E04A1456D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5D978A65-320C-4B3C-94C6-222943DA4647}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,8 +30,15 @@ Global
 		{BB6EE471-7273-47B8-A2AF-B38841065FEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB6EE471-7273-47B8-A2AF-B38841065FEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB6EE471-7273-47B8-A2AF-B38841065FEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A72CF30-C087-4F30-8F16-5D9E04A1456D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A72CF30-C087-4F30-8F16-5D9E04A1456D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A72CF30-C087-4F30-8F16-5D9E04A1456D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A72CF30-C087-4F30-8F16-5D9E04A1456D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3A72CF30-C087-4F30-8F16-5D9E04A1456D} = {5D978A65-320C-4B3C-94C6-222943DA4647}
 	EndGlobalSection
 EndGlobal

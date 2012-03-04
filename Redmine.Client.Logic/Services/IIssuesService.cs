@@ -1,6 +1,5 @@
 namespace Redmine.Client.Logic.Services
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -16,8 +15,17 @@ namespace Redmine.Client.Logic.Services
         /// </summary>
         /// <param name="projectId">The project id.</param>
         /// <returns>
-        /// The observable issyes.
+        /// The task.
         /// </returns>
-        Task<IEnumerable<Issue>> Get(int projectId);
+        Task<IEnumerable<Issue>> GetProjectIssues(int projectId);
+
+        /// <summary>
+        /// Gets the issue by identifier.
+        /// </summary>
+        /// <param name="issueId">The issue identifier.</param>
+        /// <returns>
+        /// The task.
+        /// </returns>
+        Task<Issue> GetIssue(int issueId);
     }
 }

@@ -8,10 +8,8 @@
 
     using Microsoft.Phone.Controls;
 
-    using Redmine.Client.Logic.Domain;
-    using Redmine.Client.Ui.Models;
-    using Redmine.Client.Ui.Pages;
-
+    using Redmine.Client.Ui.Mvvm;
+    
     /// <summary>
     /// Provides navigations by pages in application. 
     /// Also stores the journal of navigated pages that make posibility to go back to previous page.
@@ -19,10 +17,8 @@
     public class NavigationService : INavigationService
     {
         private readonly IContainer container;
+        
         private PhoneApplicationFrame rootFrame;
-
-        private object navigationParameter;
-        private bool isNavigating;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
@@ -31,8 +27,6 @@
         public NavigationService(IContainer container)
         {
             this.container = container;
-            this.isNavigating = false;
-
             Initialize();
         }
 
@@ -55,18 +49,22 @@
         /// <summary>
         /// Navigates to specified page with parameter.
         /// </summary>
-        /// <param name="page">The name of the page.</param>
-        /// <param name="parameter">The navigation parameter.</param>
+        /// <param name="page">
+        /// The name of the page to navigate.
+        /// </param>
+        /// <param name="parameter">
+        /// The navigation parameter.
+        /// </param>
         public void NavigateTo(string page, object parameter)
         {
-            if (isNavigating)
-                throw new Exception("Previous navigation is in process.");
-
-            this.isNavigating = true;
             var stringUrl = string.Format("/Pages/{0}.xaml", page);
 
-            // sets the navigation parameter
-            this.navigationParameter = parameter;
+            // adds query string to url if navigation has parameter.
+            if (parameter != null)
+            {
+                stringUrl = stringUrl + "?param=" + parameter;
+            }
+
             this.rootFrame.Navigate(new Uri(stringUrl, UriKind.Relative));
         }
 
@@ -77,38 +75,31 @@
         /// <param name="e">The <see cref="NavigationEventArgs"/> instance containing the event data.</param>
         private void OnNavigated(object sender, NavigationEventArgs e)
         {
-            this.isNavigating = false;
+            var pageName = e.Uri.ExtractPageName();
+            var parameters = e.Uri.ExtractParameters();
+            
+            var viewModel = this.container.ResolveNamed<IPageViewModel>(pageName);
+            var content = (FrameworkElement)e.Content;
+            content.DataContext = viewModel;
 
-            var element = (FrameworkElement)e.Content;
-            if (element is Main)
+            if (parameters.Count > 0)
             {
-                var model = this.container.Resolve<MainViewModel>();
-                element.DataContext = model;
+                viewModel.Initialize(parameters["param"]);
+                return;
             }
-
-            if (element is ProjectDetails)
-            {
-                var model = this.container.Resolve<ProjectDetailsViewModel>();
-                model.Initialize((Project)navigationParameter);
-                element.DataContext = model;
-            }
-
-            if (element is Settings)
-            {
-                var model = this.container.Resolve<SettingsViewModel>();
-                model.Initialize();
-                element.DataContext = model;
-            }
+            
+            viewModel.Initialize(null);
         }
 
         /// <summary>
         /// Occurs when an arror encountered while navigating to the requested content.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="NavigationFailedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">
+        /// The <see cref="NavigationFailedEventArgs"/> instance containing the event data.
+        /// </param>
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
-            this.isNavigating = false;
         }
 
         /// <summary>

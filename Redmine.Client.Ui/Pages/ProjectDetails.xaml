@@ -42,7 +42,7 @@
         <controls:Pivot Grid.Row="1">
             <!--Pivot item one-->
             <controls:PivotItem Header="issues" Margin="25 5 10 0" >
-                <phone7:LoadingListBox x:Name="ProjectsListBox" LoadingVisibility="Visible" ItemsSource="{Binding Issues}" >
+                <phone7:LoadingListBox x:Name="IssuesListBox" LoadingVisibility="Visible" ItemsSource="{Binding Issues}" >
                     <phone7:LoadingListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel />
@@ -50,7 +50,7 @@
                     </phone7:LoadingListBox.ItemsPanel>
                     <phone7:LoadingListBox.ItemTemplate>
                         <DataTemplate>
-                            <Button Width="445" Margin="0 0 0 10" Command="{Binding DataContext.SelectProjectCommand, ElementName=ProjectsListBox}" CommandParameter="{Binding}" toolkit:TiltEffect.IsTiltEnabled="True" >
+                            <Button Width="445" Margin="0 0 0 10" Command="{Binding DataContext.SelectIssueCommand, ElementName=IssuesListBox}" CommandParameter="{Binding}" toolkit:TiltEffect.IsTiltEnabled="True" >
                                 <Button.Template>
                                     <ControlTemplate>
                                         <Grid>
@@ -63,28 +63,28 @@
                                                 <ColumnDefinition Width="60" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock 
-                                               Grid.Row="0" 
-                                               Grid.ColumnSpan="2"
-                                               VerticalAlignment="Bottom"
-                                               HorizontalAlignment="Right"
-                                               Text="{Binding Tracker}" 
-                                               Foreground="{StaticResource PhoneSubtleBrush}"
-                                               FontSize="{StaticResource PhoneFontSizeNormal}" 
-                                               FontFamily="{StaticResource PhoneFontFamilySemiLight}"  /> 
+                                                   Grid.Row="0" 
+                                                   Grid.ColumnSpan="2"
+                                                   VerticalAlignment="Bottom"
+                                                   HorizontalAlignment="Right"
+                                                   Text="{Binding Tracker}" 
+                                                   Foreground="{StaticResource PhoneSubtleBrush}"
+                                                   FontSize="{StaticResource PhoneFontSizeNormal}" 
+                                                   FontFamily="{StaticResource PhoneFontFamilySemiLight}"  /> 
                                             <TextBlock Grid.Row="0" 
-                                               Text="{Binding Title}"
-                                               TextWrapping="Wrap"
-											   HorizontalAlignment="Stretch"
-                                               Foreground="{StaticResource PhoneForegroundBrush}"
-                                               FontSize="{StaticResource PhoneFontSizeExtraLarge}" 
-                                               FontFamily="{StaticResource PhoneFontFamilySemiLight}" VerticalAlignment="Center" />
-                                            <TextBlock Grid.Row="1"
-                                               Text="{Binding Subject}"
-                                               TextWrapping="Wrap"
-                                               Height="50"
-                                               Foreground="{StaticResource PhoneAccentBrush}"
-                                               FontSize="{StaticResource PhoneFontSizeNormal}" 
-                                               FontFamily="{StaticResource PhoneFontFamilySemiLight}"/>
+                                                   Text="{Binding Title}"
+                                                   TextWrapping="Wrap"
+											       HorizontalAlignment="Stretch"
+                                                   Foreground="{StaticResource PhoneForegroundBrush}"
+                                                   FontSize="{StaticResource PhoneFontSizeExtraLarge}" 
+                                                   FontFamily="{StaticResource PhoneFontFamilySemiLight}" VerticalAlignment="Center" />
+                                             <TextBlock Grid.Row="1"
+                                                   Text="{Binding Subject}"
+                                                   TextWrapping="Wrap"
+                                                   Height="50"
+                                                   Foreground="{StaticResource PhoneAccentBrush}"
+                                                   FontSize="{StaticResource PhoneFontSizeNormal}" 
+                                                   FontFamily="{StaticResource PhoneFontFamilySemiLight}"/>
 
                                         </Grid>
                                     </ControlTemplate>

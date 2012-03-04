@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\Issue.cs" />
+    <Compile Include="Domain\Journal.cs" />
     <Compile Include="Domain\News.cs" />
     <Compile Include="Domain\Project.cs" />
     <Compile Include="Domain\Reference.cs" />
@@ -65,6 +66,8 @@
     <Compile Include="Extensions\ConvertExtensions.cs" />
     <Compile Include="Models\IssueModel.cs" />
     <Compile Include="Models\IssuesListModel.cs" />
+    <Compile Include="Models\JournalListModel.cs" />
+    <Compile Include="Models\JournalModel.cs" />
     <Compile Include="Models\NewListModel.cs" />
     <Compile Include="Models\NewModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />

@@ -90,6 +90,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Common\ApplicationSettingsManager.cs" />
     <Compile Include="Common\ConnectionSettings.cs" />
+    <Compile Include="Common\Extensions\UriExtensions.cs" />
     <Compile Include="Common\IApplicationSettingsManager.cs" />
     <Compile Include="Common\IMessagesService.cs" />
     <Compile Include="Common\INavigationService.cs" />
@@ -100,14 +101,20 @@
     <Compile Include="Controls\Header.xaml.cs">
       <DependentUpon>Header.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\IssueDetailsViewModel.cs" />
+    <Compile Include="Models\IssueViewModel.cs" />
     <Compile Include="Models\ProjectDetailsViewModel.cs" />
     <Compile Include="Models\MainViewModel.cs" />
     <Compile Include="Models\SettingsViewModel.cs" />
+    <Compile Include="Mvvm\IPageViewModel.cs" />
     <Compile Include="Mvvm\NotificationObject.cs" />
     <Compile Include="Mvvm\NotifyingModelBase.cs" />
     <Compile Include="Mvvm\NotifyingModelBaseExtensions.cs" />
     <Compile Include="Mvvm\PropertySupport.cs" />
     <Compile Include="Mvvm\TrackingChangesModel.cs" />
+    <Compile Include="Pages\IssueDetails.xaml.cs">
+      <DependentUpon>IssueDetails.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ProjectDetails.xaml.cs">
       <DependentUpon>ProjectDetails.xaml</DependentUpon>
     </Compile>
@@ -238,6 +245,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\Header.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\IssueDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

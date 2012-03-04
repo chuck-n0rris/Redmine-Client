@@ -31,5 +31,11 @@
         /// </summary>
         [XmlElement("description")]
         public string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the journals.
+        /// </summary>
+        [XmlElement("journals")]
+        public JournalListModel Journals { get; set; }
     }
 }

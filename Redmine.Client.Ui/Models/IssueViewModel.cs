@@ -8,8 +8,6 @@
     /// </summary>
     public class IssueViewModel : NotificationObject
     {
-        private readonly Issue issue;
-
         private string subject;
         private string description;
         private string tracker;
@@ -22,11 +20,11 @@
         /// </param>
         public IssueViewModel(Issue issue)
         {
-            this.issue = issue;
+            this.Source = issue;
 
-            this.Subject = this.issue.Subject;
-            this.Description = this.issue.Description;
-            this.Tracker = this.issue.Tracker.Name;
+            this.Subject = this.Source.Subject;
+            this.Description = this.Source.Description;
+            this.Tracker = this.Source.Tracker.Name;
         }
 
         /// <summary>
@@ -36,7 +34,7 @@
         {
             get
             {
-                return string.Format("Issue #{0}", this.issue.Id);
+                return string.Format("issue #{0}", this.Source.Id);
             }
         }
         
@@ -90,5 +88,10 @@
                 this.RaisePropertyChanged(() => Description);
             }
         }
+
+        /// <summary>
+        /// Gets or sets the source.
+        /// </summary>
+        public Issue Source { get; private set; }
     }
 }

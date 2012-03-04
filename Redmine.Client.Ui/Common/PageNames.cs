@@ -19,5 +19,10 @@
         /// This is a settings page name.
         /// </summary>
         public const string Settings = "Settings";
+
+        /// <summary>
+        /// This is a issue details page name.
+        /// </summary>
+        public const string IssueDetails = "IssueDetails";
     }
 }

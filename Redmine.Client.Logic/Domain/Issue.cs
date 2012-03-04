@@ -1,5 +1,7 @@
 ﻿namespace Redmine.Client.Logic.Domain
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Describes the redmine issue.
     /// </summary>
@@ -24,5 +26,10 @@
         /// Gets or sets the subject.
         /// </summary>
         public string Subject { get; set; }
+
+        /// <summary>
+        /// Gets or sets the journals.
+        /// </summary>
+        public IEnumerable<Journal> Journals { get; set; }
     }
 }

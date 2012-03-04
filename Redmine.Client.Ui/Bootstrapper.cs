@@ -6,6 +6,7 @@
     using Redmine.Client.Logic.Services;
     using Redmine.Client.Ui.Common;
     using Redmine.Client.Ui.Models;
+    using Redmine.Client.Ui.Mvvm;
 
     /// <summary>
     /// Class which configure the Ioc conteiner and application settings.
@@ -52,9 +53,10 @@
             builder.RegisterType<NewsService>().As<INewsService>();
 
             // register view models
-            builder.RegisterType<MainViewModel>();
-            builder.RegisterType<ProjectDetailsViewModel>();
-            builder.RegisterType<SettingsViewModel>();
+            builder.RegisterType<MainViewModel>().Named<IPageViewModel>(PageNames.Main);
+            builder.RegisterType<ProjectDetailsViewModel>().Named<IPageViewModel>(PageNames.ProjectDetails);
+            builder.RegisterType<SettingsViewModel>().Named<IPageViewModel>(PageNames.Settings);
+            builder.RegisterType<IssueDetailsViewModel>().Named<IPageViewModel>(PageNames.IssueDetails);
         }
 
         /// <summary>

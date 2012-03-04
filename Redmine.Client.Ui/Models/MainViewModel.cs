@@ -4,25 +4,22 @@
     using System.Collections.ObjectModel;
     using System.Windows.Input;
 
-    using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
     
     using Redmine.Client.Logic.Domain;
     using Redmine.Client.Logic.Services;
     using Redmine.Client.Ui.Common;
-    
+    using Redmine.Client.Ui.Mvvm;
+
     /// <summary>
     /// View model for the projects view.
     /// </summary>
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : NotifyingModelBase, IPageViewModel
     {
         private readonly IProjectsService projectsService;
         private readonly INavigationService navigationService;
 
         private readonly INewsService newsService;
-
-        private ObservableCollection<Project> projects;
-        private ObservableCollection<News> news;
 
         /// <summary>
         /// Initializes a new instance of the ViewModelBase class.
@@ -41,24 +38,13 @@
                              INewsService newsService)
         {
             this.InitializeCommands();
-
-            this.projects = new ObservableCollection<Project>();
-            this.news = new ObservableCollection<News>();
+            
+            this.Projects = new ObservableCollection<Project>();
+            this.News = new ObservableCollection<News>();
 
             this.projectsService = projectsService;
             this.navigationService = navigationService;
             this.newsService = newsService;
-
-            this.projectsService.Get()
-                .ContinueWith(it => UiThread.Dispatch(() =>
-                    {
-                        foreach (var project in it.Result)
-                        {
-                            this.Projects.Add(project);
-                        }
-                    }));
-
-            this.newsService.GetAll().ContinueWith(it => UiThread.Dispatch(() => OnNewsReceived(it.Result)));
         }
 
         /// <summary>
@@ -70,39 +56,43 @@
         /// Gets or sets the select project command.
         /// </summary>
         public ICommand SelectProjectCommand { get; set; }
-
+        
         /// <summary>
-        /// Gets or sets the projects.
+        /// Gets or sets the Projects.
         /// </summary>
         public ObservableCollection<Project> Projects
         {
-            get
-            {
-                return this.projects;
-            }
-
-            set
-            {
-                this.projects = value;
-                this.RaisePropertyChanged("Projects");
-            }
+            get { return this.GetValue(it => it.Projects); }
+            set { this.SetValueAndRaisePropertyChanged(it => it.Projects, value); }
         }
 
         /// <summary>
-        /// Gets or sets the projects.
+        /// Gets or sets the News.
         /// </summary>
         public ObservableCollection<News> News
         {
-            get
-            {
-                return this.news;
-            }
+            get { return this.GetValue(it => it.News); }
+            set { this.SetValueAndRaisePropertyChanged(it => it.News, value); }
+        }
 
-            set
-            {
-                this.news = value;
-                this.RaisePropertyChanged("News");
-            }
+        /// <summary>
+        /// Initializes the view model.
+        /// </summary>
+        /// <param name="parameter">
+        /// The navigation parameter.
+        /// </param>
+        public void Initialize(object parameter)
+        {
+            this.projectsService.Get()
+                .ContinueWith(it => UiThread.Dispatch(() =>
+                {
+                    foreach (var project in it.Result)
+                    {
+                        this.Projects.Add(project);
+                    }
+                }));
+
+            this.newsService.GetAll().ContinueWith(it => UiThread.Dispatch(() => OnNewsReceived(it.Result)));
         }
 
         /// <summary>
@@ -128,7 +118,7 @@
                 this.navigationService.NavigateTo(PageNames.Settings));
 
             this.SelectProjectCommand = new RelayCommand<Project>(proj =>
-                this.navigationService.NavigateTo(PageNames.ProjectDetails, proj));
+                this.navigationService.NavigateTo(PageNames.ProjectDetails, proj.Id));
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿namespace Redmine.Client.Logic.Extensions
 {
+    using System.Linq;
+
     using Redmine.Client.Logic.Domain;
     using Redmine.Client.Logic.Models;
 
@@ -47,7 +49,32 @@
                 Tracker = new Tracker { Id = model.Tracker.Id, Name = model.Tracker.Name }
             };
 
+            if (model.Journals != null && model.Journals.Journals != null)
+            {
+                issue.Journals = model.Journals.Journals
+                    .Select(it => it.ToJournal())
+                    .ToList();
+            }
+
             return issue;
+        }
+
+        /// <summary>
+        /// Converts from <see cref="JournalModel"/> to <see cref="Journal"/> object.
+        /// </summary>
+        /// <param name="model">The data access model.</param>
+        /// <returns>
+        /// The instance of <see cref="Issue"/> entity.
+        /// </returns>
+        public static Journal ToJournal(this JournalModel model)
+        {
+            var journal = new Journal();
+            journal.Id = model.Id;
+            journal.Notes = model.Notes;
+            journal.Created = model.Created;
+            journal.User = new Reference { Id = model.User.Id, Name = model.User.Name };
+
+            return journal;
         }
 
         /// <summary>

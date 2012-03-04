@@ -10,7 +10,7 @@
     /// <summary>
     /// View model for the settings page view.
     /// </summary>
-    public class SettingsViewModel : TrackingChangesModel
+    public class SettingsViewModel : TrackingChangesModel, IPageViewModel
     {
         private readonly IApplicationSettingsManager settingsManager;
         private readonly IPingService pingService;
@@ -96,7 +96,10 @@
         /// <summary>
         /// Initializes and prepares the data for viewmodel.
         /// </summary>
-        public void Initialize()
+        /// <param name="param">
+        /// The initialization parameter.
+        /// </param>
+        public void Initialize(object param)
         {
             var credentials = this.settingsManager.GetConnectionSettings();
             
@@ -139,16 +142,16 @@
         {
             this.pingService.TestConnection()
                 .ContinueWith(it => UiThread.Dispatch(() =>
+                {
+                    if (it.IsFaulted)
                     {
-                        if (it.IsFaulted)
-                        {
-                            messagesService.Error("Connection to the server with such parameters forbidden.");
-                            return;
-                        }
+                        messagesService.Error("Connection to the server with such parameters forbidden.");
+                        return;
+                    }
 
-                        messagesService.Info("Connection to the server was successful.");
-                        it.Dispose();
-                    }));
+                    messagesService.Info("Connection to the server was successful.");
+                    it.Dispose();
+                }));
         }
     }
 }
